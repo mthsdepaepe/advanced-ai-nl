@@ -41,8 +41,8 @@ Zelfde beoordelingsregels als in `foutmarge.md` (extra detail bij `model`, T08 m
 
 ## Klopte mijn gok?
 
-<in te vullen door mij>
+Nee, blijkbaar was Sonnet de beste, bijna perfect. En de helft van de prijs van Opus. Haiku is de slechtste maar kost bijna niets.
 
 ## Welke setup zet ik in productie?
 
-<in te vullen door mij: "Deze taak draait op dit model, met deze effort, omdat …">
+Deze taak draait op Sonnet met effort medium. Deze heeft bijna alles correct. Is wel 10x duurder dan Haiku, maar dat maakt niet uit als ik geld kan verdienen.
