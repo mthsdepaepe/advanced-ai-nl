@@ -1,0 +1,1 @@
+{"merk": "Omega", "model": "Seamaster Professional 300", "referentienummer": "onbekend", "bouwjaar": "onbekend", "staat": "gedragen", "doos_papieren": "onbekend", "vraagprijs": 2450, "munt": "EUR", "verkoper": "particulier", "servicegeschiedenis": "batterij vervangen op 15.01.2024"}

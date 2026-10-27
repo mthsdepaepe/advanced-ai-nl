@@ -1,0 +1,3 @@
+```json
+{"merk": "Tudor", "model": "Black Bay Chrono", "referentienummer": "onbekend", "bouwjaar": "onbekend", "staat": "zeer goed", "doos_papieren": "onbekend", "vraagprijs": 3999, "munt": "EUR", "verkoper": "particulier", "servicegeschiedenis": "onbekend"}
+```

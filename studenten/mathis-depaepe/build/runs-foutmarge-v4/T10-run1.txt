@@ -1,0 +1,1 @@
+{"merk": "Rolex", "model": "onbekend", "referentienummer": "onbekend", "bouwjaar": "onbekend", "staat": "onbekend", "doos_papieren": "onbekend", "vraagprijs": "onbekend", "munt": "onbekend", "verkoper": "handelaar", "servicegeschiedenis": "onbekend"}

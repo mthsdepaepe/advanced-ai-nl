@@ -1,0 +1,1 @@
+{"merk": "Omega", "model": "Seamaster Planet Ocean 600m", "referentienummer": "23230422101003", "bouwjaar": "onbekend", "staat": "zeer goed", "doos_papieren": "enkel doos", "vraagprijs": "onbekend", "munt": "EUR", "verkoper": "particulier", "servicegeschiedenis": "Laatste revisie bij Omega in 03.2026, factuur wordt meegeleverd."}

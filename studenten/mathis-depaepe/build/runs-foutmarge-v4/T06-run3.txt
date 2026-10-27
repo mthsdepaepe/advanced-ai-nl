@@ -1,0 +1,1 @@
+{"merk": "Omega", "model": "Seamaster Planet Ocean", "referentienummer": "21530442103001", "bouwjaar": "onbekend", "staat": "zeer goed", "doos_papieren": "onbekend", "vraagprijs": 3999, "munt": "EUR", "verkoper": "particulier", "servicegeschiedenis": "onbekend"}

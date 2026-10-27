@@ -1,0 +1,1 @@
+{"merk": "Rolex", "model": "Datejust", "referentienummer": "1603", "bouwjaar": 1970, "staat": "zeer goed", "doos_papieren": "geen", "vraagprijs": 4195, "munt": "EUR", "verkoper": "particulier", "servicegeschiedenis": "onbekend"}
