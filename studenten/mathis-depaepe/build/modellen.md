@@ -14,7 +14,9 @@ Gedraaid op 27 oktober 2026 met `run-foutmarge.mjs`, prompt v4 (`prompt.md`), T0
 | B | `claude-haiku-5-5` | medium | 94/100 | Ja (94–95) | 1.138 | $0,00073 / € 0,00066 | $5,27 / € 4,74 |
 | C | `claude-opus-5-5` | medium | 97/100 | Nee, boven v4 Haiku (94–95) | 505 | $0,017 / € 0,015 | $120 / € 108 |
 
-Foutmarge = v4 op Haiku 5.5, standaard-effort, 3 runs (`foutmarge.md`). Sonnet en Opus draaiden maar 1 keer: hun eigen foutmarge is niet gemeten.
+Foutmarge = v4 op Haiku 5.5, standaard-effort, 3 runs (`foutmarge.md`). Opus draaide maar 1 keer: zijn eigen foutmarge is niet gemeten.
+
+**Sonnet 3 runs (achteraf, 27 oktober):** 98, 98 en 97 op 100, foutmarge **97–98** (n = 10, 3 runs, effort medium). Gemiddeld 430 output-tokens per run in run 2 en 3. Zie `foutmarge.md`.
 
 **Kost per run** = jouw deel input uit week 4 (± 1.631 tokens, zie `kosten.md`) × inputprijs + output-tokens van de setup × outputprijs. Prijzen per miljoen tokens: Sonnet 5.5 $2 / $10, Haiku 5.5 $0,10 / $0,50, Opus 5.5 $4 / $20 (tabel week 5). Per jaar = 600 per maand × 12 = 7.200 runs. 1 dollar = 0,90 euro.
 

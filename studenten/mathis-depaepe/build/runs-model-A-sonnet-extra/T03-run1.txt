@@ -1,0 +1,1 @@
+{"merk": "Rolex", "model": "Datejust 41", "referentienummer": "onbekend", "bouwjaar": "onbekend", "staat": "zeer goed", "doos_papieren": "enkel doos", "vraagprijs": 10500, "munt": "EUR", "verkoper": "handelaar", "servicegeschiedenis": "onbekend"}

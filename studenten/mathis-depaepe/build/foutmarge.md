@@ -48,3 +48,16 @@ Wat de cijfers zeggen:
 - De bereiken overlappen (v3 94–97, v4 94–95). Volgens de regel van week 5 is v4 dus niet bewezen beter.
 - T10 verkoper: v4 gaf 3 op 3 keer "handelaar". v3, zonder de optie "onbekend", gaf 2 op 3 keer "onbekend".
 - T01–T09 verkoper: in alle 60 runs juist.
+
+## Sonnet 5.5 (gekozen model), 27 oktober 2026
+
+Model: `claude-sonnet-5-5`, effort medium, prompt v4. n = 10 inputs × 10 velden, 3 runs. Zelfde opstelling. Run 1 = `runs-model-A-sonnet/`, run 2 en 3 = `runs-model-A-sonnet-extra/` (daar run1 en run2).
+
+| Versie | Run 1 | Run 2 | Run 3 | Foutmarge (min–max) |
+|---|---:|---:|---:|---:|
+| v4, Sonnet 5.5 | 98/100 | 98/100 | 97/100 | 97–98 |
+
+Fouten: T10 merk (3 van 3), T10 verkoper (2 van 3), T04 referentienummer "onbekend" (2 van 3).
+Juist gerekend volgens de regels: T05 model "Black Bay Chrono Panda", T06 en T09 model met extra detail, T08 model, alle servicegeschiedenissen.
+
+Let op: de foutmarge van Haiku (94–95) is gemeten op standaard-effort, die van Sonnet op effort medium. Het bereik van Sonnet ligt volledig boven dat van Haiku.
