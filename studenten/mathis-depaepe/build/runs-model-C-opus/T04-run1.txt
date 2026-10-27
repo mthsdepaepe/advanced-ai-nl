@@ -1,0 +1,1 @@
+{"merk": "Audemars Piguet", "model": "Royal Oak Offshore", "referentienummer": "26020ST.OO.D091CR.01", "bouwjaar": 2012, "staat": "zeer goed", "doos_papieren": "enkel doos", "vraagprijs": 16995, "munt": "EUR", "verkoper": "handelaar", "servicegeschiedenis": "interne revisie op 8 mei 2026"}

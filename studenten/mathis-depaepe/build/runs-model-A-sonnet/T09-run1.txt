@@ -1,0 +1,1 @@
+{"merk": "Tudor", "model": "Black Bay 58 Blue", "referentienummer": "79030B", "bouwjaar": 2021, "staat": "zeer goed", "doos_papieren": "full set", "vraagprijs": "onbekend", "munt": "EUR", "verkoper": "particulier", "servicegeschiedenis": "onbekend"}
