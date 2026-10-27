@@ -4,6 +4,8 @@
 
 Ik dacht dat v4 beter zou zijn, maar v3 haalde 94 tot 97 en v4 94 tot 95 (n = 10, 3 runs, Haiku 5.5). Mijn claim is dus ingetrokken. Sonnet haalde wel 97 tot 98.
 
+Opvallend: v3 gaf bij T10 2 van de 3 keer "onbekend" als verkoper, ook zonder die optie in de prompt. v4 gaf 3 keer "handelaar".
+
 ## Model en effort
 
 Ik dacht dat Opus het best zou scoren, maar Sonnet haalde 98.
@@ -18,11 +20,13 @@ Ik bespaar 7,43 minuten per advertentie, netto ± € 13.332 per jaar. Bij 97 op
 
 Mijn zwakste cijfer is 20 advertenties per dag. Het is een schatting, bij 10 per dag halveert alles: ± € 6.666 per jaar.
 
+Ook het nakijken is geschat. Het duurt 2 tot 3 minuten. Met 2 minuten wordt het netto € 15.125 in plaats van € 13.332. Het volume weegt dus nog altijd veel zwaarder dan mijn foutmarge, want die verschuift het netto maar met € 360.
+
 ## Mijn dashboard
 
 https://claude.ai/artifact/1Z4fkeEdNgbtGjntYx2uqx
 
-De lezer moet eerst mijn score met foutmarge zien.
+De lezer moet eerst mijn score met foutmarge zien. Daaronder staat de grafiek van mijn foutmarge. Daar zie je meteen dat Sonnet hoger ligt dan Haiku, en dat v3 en v4 overlappen.
 
 ## Mijn AI-ismen
 
