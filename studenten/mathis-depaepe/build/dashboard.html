@@ -1,0 +1,229 @@
+<title>Horlogeadvertenties uitlezen</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  /* Layout: één smalle kolom zoals een keuringsrapport; kerncijfers bovenaan, daarna meting → kost → waarde. */
+  :root {
+    --bg: #f3f4f2;
+    --surface: #ffffff;
+    --ink: #1b2124;
+    --muted: #5d676b;
+    --line: #d8dcd9;
+    --accent: #1f5a54;      /* donkergroene wijzerplaat */
+    --brass: #9a7a3c;       /* messing van de kast */
+    --good: #2f6f3e;
+    --warn: #9a5b12;
+    --bad: #a3342b;
+    --chip-bg: #e6ece9;
+    --f-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --f-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --f-data: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121618; --surface: #1a2023; --ink: #e6e9e7; --muted: #9aa5a8; --line: #2c3539;
+      --accent: #6fb5aa; --brass: #cfae6a; --good: #7cc48c; --warn: #e0a455; --bad: #ec8a80; --chip-bg: #223033;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #121618; --surface: #1a2023; --ink: #e6e9e7; --muted: #9aa5a8; --line: #2c3539;
+    --accent: #6fb5aa; --brass: #cfae6a; --good: #7cc48c; --warn: #e0a455; --bad: #ec8a80; --chip-bg: #223033;
+    color-scheme: dark;
+  }
+
+  body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55; }
+  .wrap { max-width: 760px; margin: 0 auto; padding-block: 28px 56px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: grid; gap: 36px; }
+
+  header { display: grid; gap: 6px; }
+  .eyebrow { font-family: var(--f-data); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--brass); }
+  h1 { font-family: var(--f-display); font-weight: 600; font-size: clamp(28px, 6vw, 40px); line-height: 1.15; margin: 0; text-wrap: balance; }
+  .lede { color: var(--muted); margin: 0; max-width: 62ch; }
+  .lede code { font-family: var(--f-data); font-size: 13px; }
+
+  h2 { font-family: var(--f-display); font-weight: 600; font-size: 22px; margin: 0; text-wrap: balance; }
+  section { display: grid; gap: 14px; min-width: 0; }
+  p { margin: 0; max-width: 65ch; }
+  .note { color: var(--muted); font-size: 13.5px; }
+
+  .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  @media (min-width: 640px) { .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .tile { background: var(--surface); padding: 14px 16px; display: grid; gap: 4px; align-content: start; }
+  .tile .k { font-size: 12px; color: var(--muted); letter-spacing: .03em; }
+  .tile .v { font-family: var(--f-data); font-size: 22px; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .tile .s { font-size: 12.5px; color: var(--muted); }
+
+  .chip { display: inline-block; font-family: var(--f-data); font-size: 12px; padding: 2px 8px; border-radius: 99px; background: var(--chip-bg); color: var(--ink); white-space: nowrap; }
+  .chip.bad { color: var(--bad); }
+  .chip.good { color: var(--good); }
+  .chip.warn { color: var(--warn); }
+
+  .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  th { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .03em; white-space: nowrap; }
+  td.n, th.n { text-align: right; font-family: var(--f-data); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tr.pick td { background: var(--chip-bg); }
+  td .src { display: block; font-size: 12px; color: var(--muted); }
+  tr.total td { font-weight: 600; }
+
+  .chart { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px; overflow-x: auto; }
+  .chart svg { display: block; width: 100%; min-width: 480px; height: auto; }
+  .chart text { font-family: var(--f-data); font-size: 12px; fill: var(--muted); }
+  .chart .lab { fill: var(--ink); font-family: var(--f-body); font-size: 13px; }
+  .chart .grid { stroke: var(--line); stroke-width: 1; }
+  .chart .rng { stroke-width: 8; stroke-linecap: round; opacity: .28; }
+  .chart .dot { stroke: var(--surface); stroke-width: 2; }
+  .c-haiku { stroke: var(--brass); fill: var(--brass); }
+  .c-sonnet { stroke: var(--accent); fill: var(--accent); }
+
+  .claim { border-left: 3px solid var(--warn); padding: 12px 16px; background: var(--surface); border-radius: 0 6px 6px 0; display: grid; gap: 8px; }
+  .claim q { font-family: var(--f-display); font-size: 18px; quotes: "“" "”"; }
+
+  .weak { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .weak > div { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; display: grid; gap: 2px; }
+  .weak .k { font-size: 12px; color: var(--muted); letter-spacing: .03em; }
+  .weak .v { font-family: var(--f-data); font-size: 20px; font-variant-numeric: tabular-nums; }
+
+  footer { color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 4px; }
+  footer code { font-family: var(--f-data); }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Build · week 5 · 27 oktober 2026</span>
+    <h1>Horlogeadvertenties uitlezen</h1>
+    <p class="lede">De tool haalt tien vaste velden uit één advertentie van een tweedehands luxehorloge: merk, model, referentienummer, bouwjaar, staat, doos en papieren, vraagprijs, munt, verkoper en servicegeschiedenis. Gekozen setup: Sonnet 5.5 (<code>claude-sonnet-5-5</code>), effort medium, prompt v4.</p>
+  </header>
+
+  <section aria-label="Kerncijfers">
+    <div class="tiles">
+      <div class="tile"><span class="k">Score</span><span class="v">97–98</span><span class="s">op 100 velden · n = 10, 3 runs</span></div>
+      <div class="tile"><span class="k">Kost per run</span><span class="v">€ 0,0068</span><span class="s">Sonnet 5.5, mijn deel</span></div>
+      <div class="tile"><span class="k">Netto per jaar</span><span class="v">± € 13.332</span><span class="s">bereik € 13.091–13.451</span></div>
+      <div class="tile"><span class="k">Claim v4 &gt; v3</span><span class="v"><span class="chip bad">ingetrokken</span></span><span class="s">bereiken overlappen</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Foutmarge</h2>
+    <p>Dezelfde prompt, dezelfde tien advertenties, drie keer gedraaid. Elke stip is één run. De balk is het bereik van laagste tot hoogste score.</p>
+    <div class="chart">
+      <svg viewBox="0 0 600 180" role="img" aria-label="Score per run: v3 Haiku 94, 96, 97. v4 Haiku 94, 95, 94. v4 Sonnet 98, 98, 97.">
+        <g>
+          <line class="grid" x1="140" y1="18" x2="140" y2="150"/>
+          <line class="grid" x1="228" y1="18" x2="228" y2="150"/>
+          <line class="grid" x1="316" y1="18" x2="316" y2="150"/>
+          <line class="grid" x1="404" y1="18" x2="404" y2="150"/>
+          <line class="grid" x1="492" y1="18" x2="492" y2="150"/>
+          <line class="grid" x1="580" y1="18" x2="580" y2="150"/>
+          <text x="140" y="170" text-anchor="middle">90</text>
+          <text x="228" y="170" text-anchor="middle">92</text>
+          <text x="316" y="170" text-anchor="middle">94</text>
+          <text x="404" y="170" text-anchor="middle">96</text>
+          <text x="492" y="170" text-anchor="middle">98</text>
+          <text x="580" y="170" text-anchor="middle">100</text>
+        </g>
+        <!-- x = 140 + (score − 90) × 44 -->
+        <text class="lab" x="0" y="44">v3 · Haiku 5.5</text>
+        <line class="rng c-haiku" x1="316" y1="40" x2="448" y2="40"/>
+        <circle class="dot c-haiku" cx="316" cy="40" r="6"/>
+        <circle class="dot c-haiku" cx="404" cy="40" r="6"/>
+        <circle class="dot c-haiku" cx="448" cy="40" r="6"/>
+        <text x="460" y="44">94–97</text>
+
+        <text class="lab" x="0" y="89">v4 · Haiku 5.5</text>
+        <line class="rng c-haiku" x1="316" y1="85" x2="360" y2="85"/>
+        <circle class="dot c-haiku" cx="316" cy="80" r="6"/>
+        <circle class="dot c-haiku" cx="316" cy="90" r="6"/>
+        <circle class="dot c-haiku" cx="360" cy="85" r="6"/>
+        <text x="372" y="89">94–95</text>
+
+        <text class="lab" x="0" y="134">v4 · Sonnet 5.5</text>
+        <line class="rng c-sonnet" x1="448" y1="130" x2="492" y2="130"/>
+        <circle class="dot c-sonnet" cx="448" cy="130" r="6"/>
+        <circle class="dot c-sonnet" cx="492" cy="125" r="6"/>
+        <circle class="dot c-sonnet" cx="492" cy="135" r="6"/>
+        <text x="504" y="134">97–98</text>
+      </svg>
+    </div>
+    <p class="note">Score = juiste velden op 100 (10 advertenties × 10 velden). Haiku draaide op standaard-effort, Sonnet op effort medium.</p>
+
+    <div class="claim">
+      <span class="eyebrow">Mijn claim uit week 4</span>
+      <q>v4 lost T10 verkoper op, dus v4 is beter dan v3.</q>
+      <p><span class="chip bad">ingetrokken</span> De bereiken overlappen (v3 94–97, v4 94–95), en T10 verkoper bleef in alle 3 runs van v4 "handelaar". v3 zonder de optie "onbekend" gaf 2 van de 3 keer wel "onbekend".</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Drie setups</h2>
+    <p>Zelfde prompt v4, zelfde tien advertenties, effort medium, 1 run per setup.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Setup</th><th class="n">Score</th><th>Binnen foutmarge Haiku (94–95)?</th><th class="n">Output-tokens</th><th class="n">Kost per run</th><th class="n">Per jaar</th></tr></thead>
+        <tbody>
+          <tr class="pick"><td>A · Sonnet 5.5 <span class="chip good">gekozen</span></td><td class="n">98</td><td>Nee, erboven</td><td class="n">426</td><td class="n">€ 0,0068</td><td class="n">€ 49</td></tr>
+          <tr><td>B · Haiku 5.5</td><td class="n">94</td><td>Ja</td><td class="n">1.138</td><td class="n">€ 0,00066</td><td class="n">€ 4,74</td></tr>
+          <tr><td>C · Opus 5.5</td><td class="n">97</td><td>Nee, erboven</td><td class="n">505</td><td class="n">€ 0,015</td><td class="n">€ 108</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Sonnet daarna nog 2 keer gedraaid: 98, 98, 97 (foutmarge 97–98). Opus draaide 1 keer, zijn foutmarge is nog niet gemeten. Haiku denkt het langst: ± 1.000 denktokens per run, tegenover ± 300 bij Sonnet.</p>
+    <p><strong>Keuze:</strong> Deze taak draait op Sonnet met effort medium. Deze heeft bijna alles correct. Is wel 10x duurder dan Haiku, maar dat maakt niet uit als ik geld kan verdienen.</p>
+  </section>
+
+  <section>
+    <h2>Kost</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Sonnet 5.5</th><th class="n">Tokens</th><th class="n">Prijs per miljoen</th><th class="n">Per run</th></tr></thead>
+        <tbody>
+          <tr><td>Input, mijn deel</td><td class="n">1.631</td><td class="n">$ 2</td><td class="n">$ 0,0033</td></tr>
+          <tr><td>Output</td><td class="n">426</td><td class="n">$ 10</td><td class="n">$ 0,0043</td></tr>
+          <tr class="total"><td>Samen</td><td class="n"></td><td class="n"></td><td class="n">$ 0,0075 · € 0,0068</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>600 advertenties per maand: <strong>± € 4,06 per maand</strong>, <strong>± € 49 per jaar</strong> (7.200 runs).</p>
+    <p class="note">1 dollar = 0,90 euro (aanname van de cursus). Mijn deel = totaal min ± 3.000 tokens systeemprompt van Claude Code. Het Haiku-model en de prijs uit week 4 zijn in week 5 gecontroleerd: alle runs waren <code>claude-haiku-5-5</code>, aan $ 0,10 / $ 0,50 per miljoen. Geen correctie nodig.</p>
+  </section>
+
+  <section>
+    <h2>Value chain</h2>
+    <div class="scroll">
+      <table>
+        <tbody>
+          <tr><td>Met de hand</td><td>Lezen 8 min · velden opzoeken 3 min · prijzen vergelijken 5 min · handelaar bekijken 3 min = 19 min. De tool vervangt lezen en opzoeken: <strong>11 min</strong><span class="src">geschat</span></td></tr>
+          <tr><td>Met de tool</td><td>Draaien 6 s · nakijken 3 min · fouten herstellen 10 velden × 2,3% × 120 s = 28 s · samen <strong>3,57 min</strong><span class="src">draaien gemeten (n = 30), nakijken en herstellen geschat</span></td></tr>
+          <tr><td>Winst per advertentie</td><td>11 − 3,57 = <strong>7,43 min</strong></td></tr>
+          <tr><td>Volume</td><td>20 per dag · 600 per maand · 7.200 per jaar<span class="src">geschat, 7 dagen per week</span></td></tr>
+          <tr><td>Uren gewonnen</td><td><strong>892 u per jaar</strong></td></tr>
+          <tr><td>Uurkost</td><td><strong>€ 15</strong>: ik gebruik de tool voor mezelf, er is geen werkgever. Voor een werkgever: € 22,50 (× 1,5).<span class="src">aanname: mijn uurloon in de beachbar</span></td></tr>
+          <tr><td>Waarde</td><td>892 × € 15 = <strong>€ 13.381 per jaar</strong></td></tr>
+          <tr><td>Kost van de tool</td><td>7.200 × € 0,00677 = <strong>± € 49 per jaar</strong><span class="src">gemeten, Sonnet 5.5</span></td></tr>
+          <tr class="total"><td>Netto</td><td>± € 13.332 per jaar</td></tr>
+          <tr><td>Bereik</td><td>Bij 97 op 100: ± € 13.091 · bij 98 op 100: ± € 13.451</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">De € 13.332 is geen geld dat ik verdien, maar de waarde van de tijd die ik overhoud.</p>
+  </section>
+
+  <section>
+    <h2>Mijn zwakste cijfer</h2>
+    <p>20 advertenties per dag is een schatting. Dat getal beweegt het netto veel meer dan de foutmarge.</p>
+    <div class="weak">
+      <div><span class="k">Door de foutmarge</span><span class="v">± € 180</span><span class="note">97 of 98 op 100</span></div>
+      <div><span class="k">Bij 10 per dag</span><span class="v">± € 6.666</span><span class="note">netto per jaar, de helft</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Bronnen in de repo: <code>build/foutmarge.md</code>, <code>build/modellen.md</code>, <code>build/kosten.md</code>, <code>build/waarde.md</code>.</span>
+    <span>Prijzen per miljoen tokens op 21 oktober 2026, uit het cursusmateriaal van week 5.</span>
+  </footer>
+</div>
