@@ -20,4 +20,6 @@ Model: Sonnet 5.5 (`claude-sonnet-5-5`), effort medium, prompt v4. Basis: de val
 
 De foutmarge verschuift het netto met ± € 180. Het volume (20 of 10 per dag) verschuift het met ± € 6.666. Mijn zwakste cijfer is dus het volume, niet de score.
 
+Nakijken duurt tussen de 2 en 3 minuten. Ik reken met 3 minuten, het voorzichtige cijfer. Met 2 minuten: met de tool 2,57 min, winst 8,43 min, 1.012 u per jaar, netto ± € 15.125 per jaar.
+
 Met Haiku 5.5 (94–95 op 100) zou herstellen 60–72 s per advertentie kosten in plaats van 28 s.
