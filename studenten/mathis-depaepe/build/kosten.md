@@ -40,3 +40,5 @@ Kost per run, jouw deel. 1 dollar = 0,90 euro (aanname van de cursus, koers niet
 Volume per maand: **600 advertenties** (20 per dag × 30 dagen). Bron: geschat. Om de beste deals te vinden is dit volgens mij zeker nodig, en het is een realistisch en haalbaar aantal. 10× = 6.000, 1.000× = 600.000 per maand.
 
 Gerekend met de onafgeronde kost per run ($0,000767 voor Haiku 5.5, $0,00767 voor Haiku 4.5).
+
+Gecontroleerd in week 5 (2026-10-27): alle 20 runs in `runs-v4/` zijn `claude-haiku-5-5`, en de prijs ($0,10 input, $0,50 output) klopt met de tabel van week 5. Geen correctie nodig. De `total_cost_usd` in de JSON is met de prijs van Haiku 5.5 berekend, niet met die van Opus: T01 run 1 nagerekend, uitkomst $0,00101554.
