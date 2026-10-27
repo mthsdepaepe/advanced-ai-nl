@@ -37,10 +37,12 @@ Automatisch nagekeken (exacte vergelijking, hoofdletters genegeerd), daarna de v
 
 ## Mijn claim
 
-Mijn claim: "<nog in te vullen door mij: wat ik in week 3 of 4 schreef>"
+Mijn claim: "v4 lost T10 verkoper op, dus v4 is beter dan v3."
 Uit `log.md`, 20 oktober (verwachting voor v4): "T10 verkoper wordt 'onbekend'. Bij T01–T09 blijft verkoper hetzelfde."
 
-Bevestigd of ingetrokken: <...>, want <...>
+Bevestigd of ingetrokken: **ingetrokken**, want de bereiken overlappen (v3 94–97, v4 94–95), en T10 verkoper bleef in alle 3 runs van v4 "handelaar". Opvallend: v3 zonder de optie "onbekend" gaf 2 van de 3 keer wel "onbekend".
+
+T08 model blijft juist, zoals ik in week 3 besliste. Ik herlabel niet achteraf.
 
 Wat de cijfers zeggen:
 - De bereiken overlappen (v3 94–97, v4 94–95). Volgens de regel van week 5 is v4 dus niet bewezen beter.
