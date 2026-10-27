@@ -1,19 +1,18 @@
 // Foutmargetest: draait één promptbestand op T01–T10 uit test-set.md, drie runs.
 // Zelfde opstelling als run-v4.mjs, maar met het volledige modelnaam en parallel.
 // Elke run is een aparte `claude -p`-aanroep, zonder tools, vanuit een eigen lege map buiten de repo.
-// Gebruik (vanuit deze map): node run-foutmarge.mjs <promptbestand> <uitvoermap>
+// Gebruik (vanuit deze map): node run-foutmarge.mjs <promptbestand> <uitvoermap> [model] [effort] [runs]
+// Zonder model/effort/runs: claude-haiku-5-5, standaard-effort, 3 runs (de foutmargetest).
 import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, existsSync, readdirSync } from "node:fs";
 import { spawn } from "node:child_process";
 import { join, dirname } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 
-const MODEL = "claude-haiku-5-5";
-const RUNS = 3;
+const [promptFile, outDir, MODEL = "claude-haiku-5-5", EFFORT, RUNS = 3] = process.argv.slice(2);
 const PARALLEL = 6;
 
 const buildDir = dirname(fileURLToPath(import.meta.url));
-const [promptFile, outDir] = process.argv.slice(2);
 if (!promptFile || !outDir) throw new Error("Gebruik: node run-foutmarge.mjs <promptbestand> <uitvoermap>");
 if (existsSync(outDir) && readdirSync(outDir).length) throw new Error(`${outDir} is niet leeg`);
 mkdirSync(outDir, { recursive: true });
@@ -41,6 +40,7 @@ function runOne({ id, run, input }) {
     const p = spawn("claude", [
       "-p", "--model", MODEL, "--tools", "\"\"", "--safe-mode", "--strict-mcp-config",
       "--no-session-persistence", "--output-format", "json",
+      ...(EFFORT ? ["--effort", EFFORT] : []),
     ], { cwd: workDir, shell: true, timeout: 300000 });
     let out = "", err = "";
     p.stdout.on("data", (d) => (out += d));
